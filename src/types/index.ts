@@ -1,0 +1,91 @@
+export interface CompetencyData {
+  competencies: string[];
+  scores: {
+    self: number[];
+    peer: number[];
+    subordinate: number[];
+    manager: number[];
+  };
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+  avatar?: string;
+  managerId?: string;
+  relationships?: UserRelationship[];
+  competencyData?: CompetencyData;
+}
+
+export interface UserRelationship {
+  userId: string;
+  relationshipType: 'peer' | 'manager' | 'subordinate';
+}
+
+export interface ReviewCycle {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  status: 'draft' | 'active' | 'completed';
+  templateId: string;
+}
+
+export interface ReviewTemplate {
+  id: string;
+  title: string;
+  description: string;
+  sections: ReviewSection[];
+}
+
+export interface ReviewSection {
+  id: string;
+  title: string;
+  description: string;
+  questions: Question[];
+}
+
+export interface Question {
+  id: string;
+  text: string;
+  type: 'rating' | 'text' | 'multiChoice';
+  required: boolean;
+  options?: string[];
+  order: number;
+  reviewType?: 'peer' | 'manager' | 'subordinate' | 'self';
+}
+
+export interface Review {
+  id: string;
+  cycleId: string;
+  reviewerId: string;
+  revieweeId: string;
+  subjectId: string;
+  relationship: 'self' | 'peer' | 'manager' | 'direct-report';
+  status: 'pending' | 'in-progress' | 'completed';
+  dueDate: string;
+  submittedDate?: string;
+  responses: Response[];
+  isAnonymous: boolean;
+}
+
+export interface Response {
+  questionId: string;
+  value: string | number | string[];
+}
+
+export interface FeedbackSummary {
+  userId: string;
+  cycleId: string;
+  overallScore: number;
+  categoryScores: {
+    [key: string]: number;
+  };
+  strengths: string[];
+  areasForImprovement: string[];
+  reviewCount: number;
+}
